@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cc6ysd37b8gnr"]
+
+[ext_resource type="Script" uid="uid://cltn8mquaac4y" path="res://scripts/interface/playerInterface.gd" id="1_7dcxb"]
+
+[node name="PlayerInterface" type="Control" unique_id=897676272]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_7dcxb")
+
+[node name="PlayerIcon" type="TextureRect" parent="." unique_id=610920084]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerName" type="Label" parent="." unique_id=360988433]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

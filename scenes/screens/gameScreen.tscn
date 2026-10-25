@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://dmwhg3y6d7nks"]
+
+[ext_resource type="Script" uid="uid://byo43lbhrr1kb" path="res://scripts/interface/gameScreen.gd" id="1_wdglq"]
+[ext_resource type="Texture2D" uid="uid://cfouu0xs4xl08" path="res://assets/gameBackground.png" id="1_x5edd"]
+
+[node name="GameScreen" type="Control" unique_id=1874494310]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wdglq")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1762068909]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_x5edd")
+expand_mode = 1
+
+[node name="Margins" type="MarginContainer" parent="." unique_id=1325277914]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 37
+theme_override_constants/margin_top = 27
+theme_override_constants/margin_right = 39
+theme_override_constants/margin_bottom = 32
+
+[node name="MainRows" type="HBoxContainer" parent="Margins" unique_id=1419333461]
+layout_mode = 2
+
+[node name="Player1Column" type="VBoxContainer" parent="Margins/MainRows" unique_id=747079449]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Player1Panel" type="Control" parent="Margins/MainRows/Player1Column" unique_id=1655037263]
+layout_mode = 2
+
+[node name="CenterColumn" type="VBoxContainer" parent="Margins/MainRows" unique_id=1530199049]
+layout_mode = 2
+
+[node name="Player2Column" type="VBoxContainer" parent="Margins/MainRows" unique_id=718764668]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Player2Panel" type="Control" parent="Margins/MainRows/Player2Column" unique_id=2012953505]
+layout_mode = 2
+
+[node name="PauseButton" type="Button" parent="." unique_id=159999086]
+layout_mode = 0
+offset_left = 1191.0
+offset_top = 28.0
+offset_right = 1241.0
+offset_bottom = 78.0
