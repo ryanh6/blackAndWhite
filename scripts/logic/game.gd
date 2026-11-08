@@ -7,9 +7,9 @@ enum gamePhase {
 	ENDGAME
 }
 
-signal changed
-signal finishRound(winnerID: int)
-signal finishMatch(winnerID: int)
+#signal changed
+#signal finishRound(winnerID: int)
+#signal finishMatch(winnerID: int)
 
 const TILECOUNT: int = 9
 const NOTILE: int = -1
@@ -32,9 +32,18 @@ var ties: int = 0
 var previousWinnerID: int = -1
 var matchWinnerID: int = -1
 
-var hands: Array:
+# Getter Functions
+var getHands: Array:
 	get:
 		return [playerList[0].hand, playerList[1].hand]
-var placedTiles: Array:
+var getPlacedTiles: Array:
 	get:
 		return [playerList[0].placedTile, playerList[1].placedTile]
+
+var getBlackTilesRemaining: Array:
+	get:
+		return [playerList[0].blackTilesRemaining, playerList[1].blackTilesRemaining]
+
+var getWhiteTilesRemaining: Array:
+	get:
+		return [playerList[0].whiteTilesRemaining, playerList[1].whiteTilesRemaining]
