@@ -47,3 +47,31 @@ var getBlackTilesRemaining: Array:
 var getWhiteTilesRemaining: Array:
 	get:
 		return [playerList[0].whiteTilesRemaining, playerList[1].whiteTilesRemaining]
+
+var getPlacedColours: Array:
+	get:
+		return [playerList[0].placedColour, playerList[1].placedColour]
+
+var history: Array = []
+
+static func getTileColour(tile: int) -> int:
+	if tile % 2 == 0:
+		return 1
+	return 0
+
+static func calculateRequiredWins() -> int:
+	return TILECOUNT / 2 + 1
+
+func startMatch() -> Array:
+	# settings = currentSettings.copy()
+	# rng.seed = matchSeed
+	phase = gamePhase.PLACING
+	roundNumber = 0
+	ties = 0
+	previousWinnerID = -1
+	matchWinnerID = -1
+	history = []
+	
+	for player in playerList:
+		playerList[player].reset()
+	
