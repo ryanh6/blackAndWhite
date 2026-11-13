@@ -74,4 +74,8 @@ func startMatch() -> Array:
 	
 	for player in playerList:
 		playerList[player].reset()
-	
+
+func prepareNextRound() -> Array:
+	return
+
+func startRound() -> Array:

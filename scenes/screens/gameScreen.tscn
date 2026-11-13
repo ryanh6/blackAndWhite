@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dmwhg3y6d7nks"]
 
-[ext_resource type="Script" uid="uid://byo43lbhrr1kb" path="res://scripts/interface/gameScreen.gd" id="1_wdglq"]
-[ext_resource type="Texture2D" uid="uid://cfouu0xs4xl08" path="res://assets/gameBackground.png" id="1_x5edd"]
+[ext_resource type="Script" uid="uid://byo43lbhrr1kb" path="res://games/blackAndWhite/interface/gameScreen.gd" id="1_wdglq"]
+[ext_resource type="Texture2D" path="res://assets/gameBackground.png" id="1_x5edd"]
 
 [node name="GameScreen" type="Control" unique_id=1874494310]
 layout_mode = 3

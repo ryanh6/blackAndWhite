@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cc6ysd37b8gnr"]
 
-[ext_resource type="Script" uid="uid://cltn8mquaac4y" path="res://scripts/interface/playerInterface.gd" id="1_7dcxb"]
+[ext_resource type="Script" uid="uid://cltn8mquaac4y" path="res://games/blackAndWhite/interface/playerInterface.gd" id="1_7dcxb"]
 
 [node name="PlayerInterface" type="Control" unique_id=897676272]
 layout_mode = 3
