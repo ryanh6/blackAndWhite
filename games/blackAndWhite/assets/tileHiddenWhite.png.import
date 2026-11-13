@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfouu0xs4xl08"
-path="res://.godot/imported/gameBackground.png-0474f76142449a5c28d00b3ebcfd4623.ctex"
+uid="uid://ho7pmtg0po4h"
+path="res://.godot/imported/tileHiddenWhite.png-145245093b4ff29ef41110fdc804dd01.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gameBackground.png"
-dest_files=["res://.godot/imported/gameBackground.png-0474f76142449a5c28d00b3ebcfd4623.ctex"]
+source_file="res://games/blackAndWhite/assets/tileHiddenWhite.png"
+dest_files=["res://.godot/imported/tileHiddenWhite.png-145245093b4ff29ef41110fdc804dd01.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cix7uocndq6jo"
-path="res://.godot/imported/wolfPlayer.png-30a8d27c7de69acc2f9fbdb44674ab21.ctex"
+uid="uid://cl8w78ks74xam"
+path="res://.godot/imported/rhinoPlayer.png-1997bb744ab406c204b8d7e809aad089.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/wolfPlayer.png"
-dest_files=["res://.godot/imported/wolfPlayer.png-30a8d27c7de69acc2f9fbdb44674ab21.ctex"]
+source_file="res://assets/players/rhinoPlayer.png"
+dest_files=["res://.godot/imported/rhinoPlayer.png-1997bb744ab406c204b8d7e809aad089.ctex"]
 
 [params]
 
