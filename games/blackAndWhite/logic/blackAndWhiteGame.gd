@@ -96,4 +96,34 @@ func opponentTileColour() -> StringName:
 
 func validate(command: Dictionary, actionID: int) -> String:
 	match String(command.get("Type", "")):
-		"Place"
+		"Place":
+			if phase != gamePhase.PLACING:
+				return "INCORRECT PHASE"
+			if actionID != -1 and actionID != currentPlayerID:
+				return "NOT CURRENT TURN"
+			
+			var placedTile: Variant = command.get("Tile")
+			if not (placedTile is int):
+				return "INVALID MOVE"
+			if not playerList[currentPlayerID].hand.has(placedTile):
+				return "TILE NOT IN HAND"
+			
+			return ""
+		"NextRound":
+			if phase != gamePhase.ENDROUND:
+				return "ROUND NOT OVER"
+			
+			return ""
+	return "UNKNOWN COMMAND"
+
+func execute(command: Dictionary) -> Array:
+	var events: Array = []
+	
+	match String(command.get("Type", "")):
+		"Place":
+			events = doPlaceTile(int(command["Tile"]))
+		"NextRound":
+			events = prepareNextRound()
+	
+	sequence += 1
+	return events
