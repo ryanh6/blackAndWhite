@@ -1,17 +1,17 @@
 extends RefCounted
-class_name Player
+class_name BlackAndWhitePlayer
 
 var hand: Array = []
 var wins: int = 0
 var blackTilesRemaining: int = 5
 var whiteTilesRemaining: int = 4
 var placedTile: int = -1
-var placedColour: int = -1
+var placedColour: StringName = &""
 
-func reset(knownHand: bool) -> void:
+func reset(knowHand: bool) -> void:
 	hand.clear()
 	
-	if knownHand:
+	if knowHand:
 		for tile in 9:
 			hand.append(tile)
 	
@@ -22,12 +22,12 @@ func reset(knownHand: bool) -> void:
 
 func clearPlacement() -> void:
 	placedTile = -1
-	placedColour = -1
+	placedColour = &""
 
-func placeTile(tile: int, colour: int) -> void:
+func placeTile(tile: int, colour: StringName) -> void:
 	placedColour = colour
 	
-	if colour == 0:
+	if colour == &"Black":
 		blackTilesRemaining -= 1
 	else:
 		whiteTilesRemaining -= 1
