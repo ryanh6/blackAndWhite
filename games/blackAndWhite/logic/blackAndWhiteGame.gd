@@ -1,5 +1,5 @@
-extends Node
-class_name BlackWhiteGame
+extends GameLogic
+class_name BlackAndWhiteGame
 
 enum gamePhase {
 	PLACING,
@@ -79,3 +79,6 @@ func prepareNextRound() -> Array:
 	return
 
 func startRound() -> Array:
+	return
+	
+func 
