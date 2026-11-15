@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://ew1n4qmhae1e"]
+
+[ext_resource type="Script" uid="uid://eri514op5ta" path="res://games/blackAndWhite/interface/tileInterface.gd" id="1_h1ax2"]
+
+[node name="TileInterface" type="Button" unique_id=899215608]
+script = ExtResource("1_h1ax2")
+
+[node name="TileArt" type="TextureRect" parent="." unique_id=506794280]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
