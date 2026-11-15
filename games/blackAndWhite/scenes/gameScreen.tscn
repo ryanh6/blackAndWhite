@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://ktx53omjvmy1"]
+
+[node name="BlackAndWhiteScreen" type="Control" unique_id=1875233365]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameBackground" type="TextureRect" parent="." unique_id=1382438174]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Margins" type="MarginContainer" parent="." unique_id=1507975538]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GameLayout" type="BoxContainer" parent="Margins" unique_id=969428433]
+layout_mode = 2
+
+[node name="LeftPanel" type="VBoxContainer" parent="Margins/GameLayout" unique_id=259821175]
+layout_mode = 2
+
+[node name="Center" type="VBoxContainer" parent="Margins/GameLayout" unique_id=1237543154]
+layout_mode = 2
+
+[node name="RightPanel" type="VBoxContainer" parent="Margins/GameLayout" unique_id=821934659]
+layout_mode = 2
+
+[node name="Bottom" type="HBoxContainer" parent="Margins/GameLayout" unique_id=1900342537]
+layout_mode = 2
+
+[node name="EffectsLayer" type="Control" parent="." unique_id=1883968796]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RoundOverlay" type="Control" parent="." unique_id=1230506383]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PauseButton" type="Button" parent="." unique_id=1703533796]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
