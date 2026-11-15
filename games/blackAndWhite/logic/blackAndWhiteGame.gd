@@ -13,7 +13,7 @@ enum gamePhase {
 
 const TILECOUNT: int = 9
 const NOTILE: int = -1
-const NOTOVER: int = -2
+const UNFINISHED: int = -2
 
 var playerList: Array[Player] = [Player.new(), Player.new()]
 var randomNumber: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -121,9 +121,69 @@ func execute(command: Dictionary) -> Array:
 	
 	match String(command.get("Type", "")):
 		"Place":
-			events = doPlaceTile(int(command["Tile"]))
+			events = placeTile(int(command["Tile"]))
 		"NextRound":
 			events = prepareNextRound()
 	
 	sequence += 1
 	return events
+
+func placeTile(tile: int) -> Array:
+	var opponentID = 1 - currentPlayerID
+	var winnerID = -1
+	var result = UNFINISHED
+	var events: Array = []
+	
+	events.append(emit({"Type": EVENTTILEPLACED, "PlayerID": currentPlayerID, "Colour": getTileColour(tile), "Tile": tile}))
+	
+	if playerList[opponentID].placedColour == &"":
+		events.append(emit({"Type": EVENTTURNCHANGE, "PlayerID": opponentID}))
+		return events
+	
+	if playerList[0].placedTile > playerList[1].placedTile:
+		winnerID = 0
+	elif playerList[1].placedTile > playerList[0].placedTile:
+		winnerID = 1
+	
+	events.append(emit({"Type": EVENTROUNDENDED, "RoundNumber": roundNumber, "WinnerID": winnerID}))
+	
+	result = findMatchResult()
+	if result != UNFINISHED:
+		events.append(emit({"Type": EVENTMATCHENDED, "WinnerID": result}))
+	
+	return events
+
+func findMatchResult() -> int:
+	for player in playerList:
+		if playerList[player].wins >= calculateRequiredWins():
+			return player
+	
+	if roundNumber >= TILECOUNT:
+		if playerList[0].wins > playerList[1].wins:
+			return 0
+		elif playerList[1].wins > playerList[0].wins:
+			return 1
+		return -1
+
+	return UNFINISHED
+
+func emit(event: Dictionary) -> Dictionary:
+	apply(event)
+	return event
+	
+func apply(event: Dictionary) -> void:
+	match StringName(event["Type"]):
+		EVENTROUNDSTARTED:
+			
+		EVENTTILEPLACED:
+			var player := int(event["PlayerID"])
+			var tile := int(event.get("Tile", NOTILE))
+			var colour := StringName(event["Colour"])
+			playerList[player].placeTile(tile, colour)
+		EVENTTURNCHANGED:
+			currentPlayerID = int(event["PlayerID"])
+		EVENTROUNDENDED:
+			
+		EVENTMATCHENDED:
+			matchWinnerID = int(event["WinnerID"])
+			phase = gamePhase.ENDGAME
