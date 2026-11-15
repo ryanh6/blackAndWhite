@@ -1,5 +1,5 @@
 extends GameLogic
-class_name BlackAndWhiteGame
+class_name BlackWhiteGame
 
 enum gamePhase {
 	PLACING,
@@ -7,15 +7,20 @@ enum gamePhase {
 	ENDGAME
 }
 
-#signal changed
-#signal finishRound(winnerID: int)
-#signal finishMatch(winnerID: int)
-
 const TILECOUNT: int = 9
 const NOTILE: int = -1
 const UNFINISHED: int = -2
+const BLACK: StringName = &"Black"
+const WHITE: StringName = &"White"
 
-var playerList: Array[Player] = [Player.new(), Player.new()]
+const EVENTROUNDSTARTED: StringName = &"RoundStarted"
+const EVENTTILEPLACED: StringName = &"TilePlaced"
+const EVENTTURNCHANGED: StringName = &"TurnChanged"
+const EVENTROUNDENDED: StringName = &"RoundEnded"
+const EVENTMATCHENDED: StringName = &"MatchEnded"
+
+var playerList: Array[BlackWhitePlayer] = [BlackWhitePlayer.new(), BlackWhitePlayer.new()]
+var settings: GameSettings = GameSettings.create(settingsSchema())
 var randomNumber: RandomNumberGenerator = RandomNumberGenerator.new()
 var viewerID: int = -1
 
@@ -23,12 +28,13 @@ var phase: gamePhase = gamePhase.PLACING
 var roundNumber: int = 0
 var currentPlayerID: int = 0
 var secondPlayerID: int = 1
+var turnOrderReason: StringName = &"Default"
 
 var winCount: Array: 
 	get:
 		return [playerList[0].wins, playerList[1].wins]
-var tieCount: int = 0
 
+var tieCount: int = 0
 var previousWinnerID: int = -1
 var matchWinnerID: int = -1
 
@@ -62,30 +68,61 @@ static func getTileColour(tile: int) -> int:
 static func calculateRequiredWins() -> int:
 	return TILECOUNT / 2 + 1
 
-#func startMatch(chosenSettings: GameSettings, matchSeed: int) -> Array:
-	#settings = chosenSettings.copy()
-	#rng.seed = matchSeed
-	#sequence = 0
-	#
-	#phase = gamePhase.PLACING
-	#roundNumber = 0
-	#tieCount = 0
-	#previousWinnerID = -1
-	#matchWinnerID = -1
-	#
-	#history = []
-	#
-	#for player in playerList:
-		#playerList[player].reset(viewerID == -1 or viewerID == player)
-	#
-	#return startRound()
-#
-#func prepareNextRound() -> Array:
-	#var secondMove = secondPlayerID
-	#return startRound()
+func setViewerID(playerID: int) -> void:
+	viewerID = playerID
 
-#func startRound(secondMoveID: int): Array:
-	#return
+static func settingsSchema() -> SettingsSchema:
+	var newSchema: SettingsSchema = SettingsSchema.new()
+	
+	newSchema.addTurnOrder()
+	newSchema.section("Display")
+	newSchema.addBool(&"ShowRoundHistory", "Show Round History", true, "Show a summary of earlier rounds")
+	
+	return newSchema
+
+func startMatch(chosenSettings: GameSettings, matchSeed: int) -> Array:
+	settings = chosenSettings.copy()
+	randomNumber.seed = matchSeed
+	sequence = 0
+	
+	phase = gamePhase.PLACING
+	roundNumber = 0
+	tieCount = 0
+	previousWinnerID = -1
+	matchWinnerID = -1
+	
+	history = []
+	
+	for player in playerList.size():
+		playerList[player].reset(viewerID == -1 or viewerID == player)
+	
+	var second: int = 1
+	var reason: StringName = &"Default"
+	
+	if settings.get_bool(&"CoinToss"):
+		second = randomNumber.randi() % 2
+		reason = &"CoinToss"
+		
+	return startRound(second, reason)
+
+func prepareNextRound() -> Array:
+	var second: int = secondPlayerID
+	var reason: StringName = &"Unchanged"
+	
+	if settings.get_bool("&LoserSecond") and previousWinnerID != -1:
+		second = 1 - previousWinnerID
+		reason = &"RoundLoser"
+	
+	return startRound(second, reason)
+
+func startRound(second: int, reason: StringName) -> Array:
+	return [emit({
+		"Type": EVENTROUNDSTARTED,
+		"RoundNumber": roundNumber + 1,
+		"FirstPlayerID": 1 - second,
+		"SecondPlayerID": second,
+		"Reason": reason
+	})]
 
 func isSecondMove(playerID: int) -> bool:
 	return playerID == secondPlayerID
@@ -137,7 +174,7 @@ func placeTile(tile: int) -> Array:
 	events.append(emit({"Type": EVENTTILEPLACED, "PlayerID": currentPlayerID, "Colour": getTileColour(tile), "Tile": tile}))
 	
 	if playerList[opponentID].placedColour == &"":
-		events.append(emit({"Type": EVENTTURNCHANGE, "PlayerID": opponentID}))
+		events.append(emit({"Type": EVENTTURNCHANGED, "PlayerID": opponentID}))
 		return events
 	
 	if playerList[0].placedTile > playerList[1].placedTile:
@@ -154,7 +191,7 @@ func placeTile(tile: int) -> Array:
 	return events
 
 func findMatchResult() -> int:
-	for player in playerList:
+	for player in playerList.size():
 		if playerList[player].wins >= calculateRequiredWins():
 			return player
 	
@@ -194,7 +231,7 @@ func apply(event: Dictionary) -> void:
 		EVENTROUNDENDED:
 			var winner := int(event["WinnerID"])
 			if winner == -1:
-				ties += 1
+				tieCount += 1
 			else:
 				playerList[winner].wins += 1
 				
@@ -234,7 +271,7 @@ func applyEvents(events: Array) -> void:
 	
 func toDictionary() -> Dictionary:
 	var handCopies: Array = []
-	for hand in hands:
+	for hand in getHands:
 		handCopies.append(hand.duplicate())
 	return {
 		"Settings": settings.toDictionary(),
@@ -249,12 +286,12 @@ func toDictionary() -> Dictionary:
 		"MatchWinner": matchWinnerID,
 		"Hands": handCopies,
 		"PlacedTiles": getPlacedTiles.duplicate(),
-		"PlacedColours": colourToString(placedColour),
+		"PlacedColours": coloursToStrings(getPlacedColours),
 		"BlackTilesRemaining": getBlackTilesRemaining.duplicate(),
 		"WhiteTilesRemaining": getWhiteTilesRemaining.duplicate(),
 		"History": historyToDictionary(),
-		"RNGSeed": rng.seed,
-		"RNGState": rng.state,
+		"RNGSeed": randomNumber.seed,
+		"RNGState": randomNumber.state,
 		"Sequence": sequence
 	}
 

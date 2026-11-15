@@ -1,5 +1,5 @@
 extends VBoxContainer
-class_name BlackAndWhitePlayerPanel
+class_name BlackWhitePlayerPanel
 
 signal tileChosen(number: int)
 

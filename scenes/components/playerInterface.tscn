@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://cc6ysd37b8gnr"]
+
+[sub_resource type="GDScript" id="GDScript_dj3d8"]
+script/source = "extends Control
+class_name PlayerInterface
+
+@export var playerName: String = \"Player\"
+@export var playerIcon: Texture2D
+
+@onready var icon: TextureRect = %PlayerIcon
+@onready var nameLabel: Label = %PlayerName
+
+func _ready():
+	icon.texture = playerIcon
+	icon.pivot_offset = icon.size / 2
+	nameLabel.text = playerName
+
+func updatePanel(score: int, isCurrent: bool):
+	icon.pivot_offset = icon.size / 2
+	
+	if isCurrent:
+		icon.scale = Vector2(1.1, 1.1)
+	else:
+		icon.scale = Vector2(1, 1)
+"
+
+[node name="PlayerInterface" type="Control" unique_id=897676272]
+layout_mode = 3
+anchors_preset = 0
+script = SubResource("GDScript_dj3d8")
+
+[node name="PlayerIcon" type="TextureRect" parent="." unique_id=610920084]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerName" type="Label" parent="." unique_id=360988433]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

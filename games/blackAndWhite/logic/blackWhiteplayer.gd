@@ -1,5 +1,5 @@
 extends RefCounted
-class_name BlackAndWhitePlayer
+class_name BlackWhitePlayer
 
 var hand: Array = []
 var wins: int = 0
