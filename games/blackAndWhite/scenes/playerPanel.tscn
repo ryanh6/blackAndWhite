@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dpd3v5eg2oew1"]
+
+[ext_resource type="Script" uid="uid://dttd1e4ehxg5y" path="res://games/blackAndWhite/interface/playerPanel.gd" id="1_8ipyr"]
+[ext_resource type="PackedScene" uid="uid://bfc4i76twu4fe" path="res://scenes/components/playerIcon.tscn" id="2_a7fnk"]
+
+[node name="PlayerPanel" type="VBoxContainer" unique_id=526460764]
+script = ExtResource("1_8ipyr")
+
+[node name="Icon" parent="." unique_id=1707791125 instance=ExtResource("2_a7fnk")]
+layout_mode = 2

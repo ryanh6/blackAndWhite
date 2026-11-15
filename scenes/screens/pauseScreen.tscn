@@ -1,6 +1,20 @@
 [gd_scene format=3 uid="uid://duv3wbx1ej457"]
 
-[ext_resource type="Script" uid="uid://ctiauoguovga7" path="res://scenes/screens/pauseScreen.gd" id="1_ibcx6"]
+[sub_resource type="GDScript" id="GDScript_kml6h"]
+script/source = "extends Control
+class_name PauseScreen
+
+signal requestResume
+signal requestReturnToTitle
+
+@onready var heading: Label = %Heading
+@onready var resumeButton: Button = %ResumeButton
+@onready var returnToTitleButton: Button = %ReturnToTitleButton
+
+func _ready() -> void:
+	resumeButton.pressed.connect(requestResume.emit)
+	returnToTitleButton.pressed.connect(requestReturnToTitle.emit)
+"
 
 [node name="PauseScreen" type="Control" unique_id=327656153]
 layout_mode = 3
@@ -9,4 +23,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ibcx6")
+script = SubResource("GDScript_kml6h")
