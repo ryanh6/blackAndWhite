@@ -174,16 +174,124 @@ func emit(event: Dictionary) -> Dictionary:
 func apply(event: Dictionary) -> void:
 	match StringName(event["Type"]):
 		EVENTROUNDSTARTED:
+			roundNumber = int(event["RoundNumber"])
+			currentPlayerID = int(event["FirstPlayerID"])
+			secondPlayerID = int(event["SecondPlayerID"])
+			
+			for player in playerList:
+				player.clearPlacement()
+			phase = gamePhase.PLACING
 			
 		EVENTTILEPLACED:
 			var player := int(event["PlayerID"])
 			var tile := int(event.get("Tile", NOTILE))
 			var colour := StringName(event["Colour"])
 			playerList[player].placeTile(tile, colour)
+			
 		EVENTTURNCHANGED:
 			currentPlayerID = int(event["PlayerID"])
+			
 		EVENTROUNDENDED:
+			var winner := int(event["WinnerID"])
+			if winner == -1:
+				ties += 1
+			else:
+				playerList[winner].wins += 1
+				
+			previousWinnerID = winner
+			history.append({
+				"Round": roundNumber,
+				"FirstPlayerID": 1 - secondPlayerID,
+				"Colours": getPlacedColours.duplicate(),
+				"Tiles": getPlacedTiles.duplicate(),
+				"WinnerID": winner
+			})
+			phase = gamePhase.ENDROUND
 			
 		EVENTMATCHENDED:
 			matchWinnerID = int(event["WinnerID"])
 			phase = gamePhase.ENDGAME
+
+func useEventSync() -> bool:
+	return true
+
+func eventForPlayer(events: Array, playerID: int) -> Array:
+	var results: Array = []
+	
+	for event in events:
+		var eventsCopy: Dictionary = event.duplicate()
+		
+		if StringName(eventsCopy["Type"]) == EVENTTILEPLACED and int(eventsCopy["PlayerID"]) != playerID:
+			eventsCopy["Tile"] = NOTILE
+		results.append(eventsCopy)
+	
+	return results
+	
+func applyEvents(events: Array) -> void:
+	for event in events:
+		apply(event)
+	sequence += 1
+	
+func toDictionary() -> Dictionary:
+	var handCopies: Array = []
+	for hand in hands:
+		handCopies.append(hand.duplicate())
+	return {
+		"Settings": settings.toDictionary(),
+		"ViewerID": viewerID,
+		"Phase": int(phase),
+		"RoundNumber": roundNumber,
+		"CurrentPlayerID": currentPlayerID,
+		"SecondPlayerID": secondPlayerID,
+		"Wins": winCount.duplicate(),
+		"Ties": tieCount,
+		"PreviousWinner": previousWinnerID,
+		"MatchWinner": matchWinnerID,
+		"Hands": handCopies,
+		"PlacedTiles": getPlacedTiles.duplicate(),
+		"PlacedColours": colourToString(placedColour),
+		"BlackTilesRemaining": getBlackTilesRemaining.duplicate(),
+		"WhiteTilesRemaining": getWhiteTilesRemaining.duplicate(),
+		"History": historyToDictionary(),
+		"RNGSeed": rng.seed,
+		"RNGState": rng.state,
+		"Sequence": sequence
+	}
+
+func snapshotForPlayer(playerID: int) -> Dictionary:
+	var data := toDictionary()
+	var other := 1 - playerID
+	data["ViewerID"] = playerID
+	data["Hands"][other] = []
+	data["PlacedTiles"][other] = NOTILE
+	
+	for entry in data["History"]:
+		entry["Tiles"][other] = NOTILE
+	return data
+	
+func coloursToStrings(colours: Array) -> Array:
+	var result: Array = []
+	
+	for colour in colours:
+		result.append(String(colour))
+	return result
+	
+func stringsToColours(strings: Array) -> Array[StringName]:
+	var result: Array[StringName] = []
+	
+	for text in strings:
+		result.append(StringName(text))
+	return result
+	
+func historyToDictionary() -> Array:
+	var result: Array = []
+	
+	for entry in history:
+		result.append({
+			"Round": entry["Round"],
+			"FirstPlayerID": entry["FirstPlayerID"],
+			"Colours": coloursToStrings(entry["Colours"]),
+			"Tiles": entry["Tiles"].duplicate(),
+			"WinnerID": entry["WinnerID"]
+		})
+	return result
