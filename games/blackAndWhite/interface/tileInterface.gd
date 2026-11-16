@@ -1,4 +1,4 @@
-extends Button
+extends LiftButton
 class_name TileInterface
 
 signal tilePressed(number: int)

@@ -62,8 +62,8 @@ var history: Array = []
 
 static func getTileColour(tile: int) -> int:
 	if tile % 2 == 0:
-		return 1
-	return 0
+		return BLACK
+	return WHITE
 
 static func calculateRequiredWins() -> int:
 	return TILECOUNT / 2 + 1
