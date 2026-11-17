@@ -9,7 +9,7 @@ const BLACKTILES: int = 5
 
 var tilesList: Array[TileInterface] = []
 var rows: Array[HBoxContainer] = []
-var isShowFace: bool = false
+var showingFace: bool = false
 
 static func numberForSlot(slot: int) -> int:
 	if slot < WHITETILES:
@@ -47,8 +47,8 @@ func setTileSize(tileSize: Vector2, separation: float) -> void:
 	for selectedTile in tilesList:
 		selectedTile.setTileSize(tileSize)
 
-func showFace(hand: Array, isEnabled: bool, selectedNumber: int) -> void:
-	isShowFace = true
+func showFaces(hand: Array, isEnabled: bool, selectedNumber: int) -> void:
+	showingFace = true
 	
 	for slot in tilesList.size():
 		var newTile := tilesList[slot]
@@ -66,3 +66,38 @@ func showFace(hand: Array, isEnabled: bool, selectedNumber: int) -> void:
 		newTile.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		newTile.setDimmed(false)
 		newTile.setSelected(false)
+
+func isShowingFaces() -> bool:
+	return showingFace
+
+func tileForNumber(number: int) -> TileInterface:
+	return tilesList[slotForNumber(number)]
+
+func sourceTile(number: int, colour: StringName) -> TileInterface:
+	var first: int
+	var last: int
+	
+	if showingFace and number >= 0:
+		var newTile := tileForNumber(number)
+		
+		if newTile.modulate.a > 0.5:
+			return newTile
+		else:
+			return null
+	
+	if colour == BlackWhiteGame.WHITE:
+		first = 0
+		last = WHITETILES - 1
+	else:
+		first = WHITETILES
+		last = tilesList.size() - 1
+		
+	for slot in range(last, first - 1, -1):
+		if tilesList[slot].modulate.a > 0.5:
+			return tilesList[slot]
+			
+	return null
+
+func onTilePressed(number: int) -> void:
+	if number >= 0:
+		tileChosen.emit(number)
