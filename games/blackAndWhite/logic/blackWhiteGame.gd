@@ -60,7 +60,7 @@ var getPlacedColours: Array:
 
 var history: Array = []
 
-static func getTileColour(tile: int) -> int:
+static func getTileColour(tile: int) -> StringName:
 	if tile % 2 == 0:
 		return BLACK
 	return WHITE

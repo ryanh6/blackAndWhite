@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://1igeg0or7mot"]
+
+[ext_resource type="Script" uid="uid://ctp2jejggwm2m" path="res://games/blackAndWhite/scenes/tileHandInterface.gd" id="1_fd1ec"]
+
+[node name="TileHandInterface" type="VBoxContainer" unique_id=747243431]
+script = ExtResource("1_fd1ec")

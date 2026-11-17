@@ -24,7 +24,7 @@ func canHover() -> bool:
 	return not disabled
 	
 func ready() -> void:
-	UiUtil.clearButtonStyles(self)
+	InterfaceUtility.clearButtonStyles(self)
 	focus_mode = Control.FOCUS_NONE
 	mouse_entered.connect(func() -> void: setHovered(true))
 	mouse_exited.connect(func() -> void: setHovered(false))
