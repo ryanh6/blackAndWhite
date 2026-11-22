@@ -306,6 +306,47 @@ func snapshotForPlayer(playerID: int) -> Dictionary:
 		entry["Tiles"][other] = NOTILE
 	return data
 	
+func fromDictionary(data: Dictionary) -> void:
+	settings = GameSettings.fromSnapshot(settings.schema, data["Settings"])
+	viewerID = int(data["ViewerID"])
+	phase = int(data["Phase"]) as gamePhase
+	roundNumber = int(data["RoundNumber"])
+	currentPlayerID = int(data["CurrentPlayerID"])
+	secondPlayerID = int(data["SecondPlayerID"])
+	turnOrderReason = StringName(data["TurnOrderReason"])
+	
+	for seat in 2:
+		playerList[seat].winCount = int(data["Wins"][seat])
+	
+	tieCount = int(data["Ties"])
+	previousWinnerID = int(data["PreviousWinnerID"])
+	matchWinnerID = int(data["MatchWinnerID"])
+	
+	for seat in 2:
+		var player := playerList[seat]
+		player.hand.clear()
+		
+		for tile in data["Hands"][seat]:
+			player.hand.append(int(tile))
+		
+		player.placedTile = int(data["PlacedTile"][seat])
+		player.blackTilesRemaining = int(data["BlackTilesRemaining"][seat])
+		player.whiteTilesRemaining = int(data["WhiteTilesRemaining"][seat])
+		player.placedColour = StringName(data["placedColour"][seat])
+	
+	history = []
+	for entry in data["History"]:
+		history.append({
+			"Round": int(entry["Round"]),
+			"FirstPlayerID": int(entry["FirstPlayerID"]),
+			"Colours": stringsToColours(entry["Colours"]),
+			"Tiles": Array(entry["Tiles"]).map(func(t): return int(t)),
+			"WinnerID": int(entry["WinnerID"])
+		})
+	randomNumber.seed = int(data["RNGSeed"])
+	randomNumber.state = int(data["RNGState"])
+	sequence = int(data["Sequence"])
+
 func coloursToStrings(colours: Array) -> Array:
 	var result: Array = []
 	

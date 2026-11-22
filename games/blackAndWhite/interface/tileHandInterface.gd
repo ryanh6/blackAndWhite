@@ -67,6 +67,31 @@ func showFaces(hand: Array, isEnabled: bool, selectedNumber: int) -> void:
 		newTile.setDimmed(false)
 		newTile.setSelected(false)
 
+func showHidden(blackRemaining: int, whiteRemaining: int) -> void:
+	showingFace = false
+	
+	for slot in tilesList.size():
+		var held: int
+		var tile := tilesList[slot]
+		var isWhite : bool = slot < WHITETILES
+		
+		if isWhite:
+			held = slot < whiteRemaining
+			tile.showHidden(BlackWhiteGame.WHITE)
+		else:
+			held = (slot - WHITETILES) < blackRemaining
+			tile.showHidden(BlackWhiteGame.BLACK)
+			
+		if held:
+			tile.modulate.a = 1.0
+		else:
+			tile.modulate.a = 0.0
+			
+		tile.disabled = true
+		tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tile.setDimmed(false)
+		tile.setSelected(false)
+
 func isShowingFaces() -> bool:
 	return showingFace
 

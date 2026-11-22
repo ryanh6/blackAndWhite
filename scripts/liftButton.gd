@@ -10,6 +10,7 @@ const HOVERFRACTION: float = 0.4
 var headRoom: float = -1.0
 var hovered: bool = false
 var selected: bool = false
+
 var lift: float = 0.0:
 	set(value):
 		lift = value
