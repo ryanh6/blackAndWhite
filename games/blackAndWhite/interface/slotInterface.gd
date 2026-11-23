@@ -22,7 +22,7 @@ func ready() -> void:
 func showEmpty() -> void:
 	art.texture = null
 
-func showTitle(colour: StringName) -> void:
+func showTile(colour: StringName) -> void:
 	art.texture = TileArt.hidden(colour)
 
 func setPulsing(active: bool) -> void:
