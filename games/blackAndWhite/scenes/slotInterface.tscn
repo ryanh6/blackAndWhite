@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://brmfpxcpjwxmx"]
+
+[ext_resource type="Script" uid="uid://c5fjyiuqphiwl" path="res://games/blackAndWhite/interface/slotInterface.gd" id="1_x4gp2"]
+
+[node name="SlotInterface" type="Control" unique_id=1356236294]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_x4gp2")

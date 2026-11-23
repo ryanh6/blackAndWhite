@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b4b27fiv8uxse"]
+
+[ext_resource type="Script" uid="uid://cwpj04fh51ulp" path="res://games/blackAndWhite/interface/boardInterface.gd" id="1_vn56t"]
+
+[node name="BoardInterface" type="Control" unique_id=1866113286]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_vn56t")
