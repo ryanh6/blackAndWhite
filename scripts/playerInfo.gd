@@ -1,6 +1,7 @@
 extends RefCounted
 class_name PlayerInfo
 
+## Defined asset paths to all player icons
 const ICONPATHS: Array[String] = [
 	"res://assets/shared/players/lion.png",
 	"res://assets/shared/players/wolf.png",
@@ -22,8 +23,10 @@ const ICONPATHS: Array[String] = [
 	"res://assets/shared/players/raccoon.png",
 ]
 
+## Display the name of the player
 static func displayName(playerID: int) -> String:
 	return "Player %d" % (playerID + 1)
 
+## Find player icon based on array index
 static func iconAt(index: int) -> Texture2D:
 	return load(ICONPATHS[index]) as Texture2D

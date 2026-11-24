@@ -1,13 +1,16 @@
 extends LiftButton
 class_name TileInterface
 
+## Define signals
 signal tilePressed(number: int)
 
+## Define node variables
+@onready var artwork: TextureRect = %TileArt
+
+## Define variables
 var number: int = -1
 var colour: StringName = &""
 var texture: Texture2D
-
-@onready var artwork: TextureRect = %TileArt
 
 func liftArt() -> Control:
 	return artwork

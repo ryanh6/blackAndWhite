@@ -1,14 +1,17 @@
 extends RefCounted
 class_name MatchView
 
+## Define asset paths
 const BACKGROUNDDIR := "res://assets/backgrounds/"
 const BACKGROUNDS : Array[String] = [
 	"canalBackground", "castleBackground", "lighthouseBackground", "lighthouseBackground", "suspensionBridgeBackground", "trainStationBackground",
 ]
 
+## Define variables
 var backgroundIndex: int = 0
 var iconOrder: Array[int] = []
 
+## Initialize the match visuals
 func init(matchSeed: int = 0) -> void:
 	var randomNumber := RandomNumberGenerator.new()
 	randomNumber.seed = hash([matchSeed, "MatchView"])
@@ -24,9 +27,11 @@ func init(matchSeed: int = 0) -> void:
 		var swap := iconOrder[i]
 		iconOrder[i] = iconOrder[j]
 		iconOrder[j] = swap
-		
+
+## Select one of the various background for the match
 func background() -> Texture2D:
 	return load("%s%s.png" % [BACKGROUNDDIR, BACKGROUNDS[backgroundIndex]]) as Texture2D
 
+## Get the icon for a given player
 func icon(playerID: int) -> Texture2D:
 	return PlayerInfo.iconAt(iconOrder[playerID])

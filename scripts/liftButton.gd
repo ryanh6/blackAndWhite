@@ -1,29 +1,34 @@
 extends Button
 class_name LiftButton
 
+## Define constants
 const LIFT: float = 26.0
 const POPUPSCALE: float = 0.1
 const HOVERFRACTION: float = 0.4
 
+## Define node variables
 @export var liftHeight: float = LIFT
 
+## Define variables
 var headRoom: float = -1.0
 var hovered: bool = false
 var selected: bool = false
+var liftTween: Tween
 
 var lift: float = 0.0:
 	set(value):
 		lift = value
 		applyLift()
 
-var liftTween: Tween
-
+## Moves and grows object. It fills button (Full-Rect).
 func liftArt() -> Control:
 	return null
-	
+
+## Raise picture when hovering or not
 func canHover() -> bool:
 	return not disabled
-	
+
+## Setup on ready
 func ready() -> void:
 	InterfaceUtility.clearButtonStyles(self)
 	focus_mode = Control.FOCUS_NONE
@@ -40,12 +45,14 @@ func setSelected(value: bool) -> void:
 	selected = value
 	animateLift()
 
+## Calculate head room needed above for clean layout
 static func headRoomFor(pictureHeight: float, liftPixels: float = LIFT) -> float:
 	if liftPixels > 0.0:
 		return liftPixels + POPUPSCALE * pictureHeight
 	else:
 		return 0.0
 
+## Button picture size, taking into account the headroom
 func setPictureSize(pictureSize: Vector2) -> void:
 	headRoom = headRoomFor(pictureSize.y, liftHeight)
 	custom_minimum_size = Vector2(pictureSize.x, pictureSize.y + headRoom)
@@ -54,7 +61,8 @@ func setPictureSize(pictureSize: Vector2) -> void:
 func setHovered(value: bool) -> void:
 	hovered = value
 	animateLift()
-	
+
+## Create the lift animation
 func animateLift() -> void:
 	var target: float = 0.0
 	
