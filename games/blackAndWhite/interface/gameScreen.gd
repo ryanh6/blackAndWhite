@@ -97,3 +97,93 @@ func assignSides() -> void:
 	rightID = 1 - leftID
 	leftPanel.showPlayer(leftID, playerName(leftID), iconFor(leftID))
 	rightPanel.showPlayer(rightID, playerName(rightID), iconFor(rightID))
+
+func iconFor(playerID: int) -> Texture2D:
+	return controller.look.icon(playerID)
+
+func playerName(playerID: int) -> String:
+	if localPlayerID == -1:
+		return "Player %d" % (playerID + 1)
+	return "You" if playerID == localPlayerID else "Opponent"
+
+func currentSeat() -> bool:
+	return localPlayerID == -1
+
+func onEvents(events: Array) -> void:
+	queue.append_array(events)
+	if not busy:
+		runQueue()
+
+func runQueue() -> void:
+	busy = true
+	while not queue.is_empty():
+		await play(queue.pop_front())
+	busy = false
+	syncAll()
+	
+func play(event: Dictionary) -> void:
+	pass
+	
+func onStateReplaced() -> void:
+	pass
+	
+func setCover(value: Cover) -> void:
+	pass
+	
+func setViewer(newViewer: int) -> void:
+	pass
+	
+func syncAll(instant: bool = false) -> void:
+	pass
+	
+func syncSelectionVisuals() -> void:
+	pass
+	
+func statusText() -> String:
+	pass
+	
+func turnText() -> String:
+	pass
+	
+func roundResultText() -> String:
+	pass
+
+func matchResultText() -> String:
+	pass
+	
+func winText(what: String) -> String:
+	pass
+	
+func turnOrderText() -> String:
+	pass
+	
+func showIntro() -> void:
+	pass
+	
+func showSummary() -> void:
+	pass
+	
+func summaryEntries() -> Array:
+	pass
+	
+func roundSummaryClosed() -> void:
+	pass
+	
+func showMatchResult() -> void:
+	pass
+	
+func coverContinue() -> void:
+	pass
+	
+func canAct() -> bool:
+	pass
+	
+func myTileChosen(number: int) -> void:
+	pass
+	
+func mySlotPressed() -> void:
+	pass
+
+func animatePlacement(event: Dictionary) -> void:
+	pass
+	
