@@ -13,7 +13,7 @@ var logic: GameLogic
 var localPlayerID: int = -1
 var playerCount: int = 2
 var matchSeed: int = 0
-var look: MatchBackground = MatchBackground.new()
+var look: MatchView = MatchView.new()
 
 func startMatch(settings: GameSettings) -> void:
 	pass
