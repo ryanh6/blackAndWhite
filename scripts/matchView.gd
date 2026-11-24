@@ -15,7 +15,7 @@ func init(matchSeed: int = 0) -> void:
 	backgroundIndex = randomNumber.randi_range(0, BACKGROUNDS.size() - 1)
 	iconOrder.clear()
 	
-	for index in PlayerInfo.ICON_PATHS.size():
+	for index in PlayerInfo.ICONPATHS.size():
 		iconOrder.append(index)
 		
 	for i in range(iconOrder.size() - 1, 0, -1):
